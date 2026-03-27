@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LimaspApp | Perfil Full Stack</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
+    <style>
+        /* --- ESTILOS GERAIS (Inspirados no Dark Mode do GitHub) --- */
+        :root {
+            --color-bg-canvas: #0d1117;
+            --color-bg-subtle: #161b22;
+            --color-border-default: #30363d;
+            --color-text-primary: #c9d1d9;
+            --color-text-secondary: #8b949e;
+            --color-text-link: #58a6ff;
+            --color-btn-bg: #21262d;
+            --color-btn-border: #f0f6fc1a;
+            --color-success-fg: #3fb950;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--color-bg-canvas);
+            color: var(--color-text-primary);
+            line-height: 1.5;
+            padding: 20px;
+        }
+
+        a {
+            color: var(--color-text-link);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* --- LAYOUT PRINCIPAL (Sidebar e Conteúdo) --- */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            gap: 32px;
+            padding-top: 24px;
+        }
+
+        /* Responsive: muda para coluna em telas menores */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 10px;
+            }
+        }
+
+        /* --- SIDEBAR (Perfil) --- */
+        .sidebar {
+            flex: 0 0 296px; /* Largura fixa estilo GitHub */
+        }
+
+        .avatar-container {
+            width: 100%;
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .avatar {
+            width: 100%;
+            border-radius: 50%;
+            border: 1px solid var(--color-border-default);
+            display: block;
+        }
+
+        .status-badge {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background-color: var(--color-bg-subtle);
+            border: 1px solid var(--color-border-default);
+            padding: 8px;
+            border-radius: 50%;
+            color: var(--color-success-fg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .user-names {
+            margin-bottom: 16px;
+        }
+
+        .user-name-full {
+            font-size: 26px;
+            font-weight: 600;
+            line-height: 1.25;
+        }
+
+        .user-name-github {
+            font-size: 20px;
+            font-weight: 300;
+            color: var(--color-text-secondary);
+        }
+
+        .bio {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: #e6edf3;
+        }
+
+        .edit-profile-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: var(--color-btn-bg);
+            color: var(--color-text-primary);
+            border: 1px solid var(--color-btn-border);
+            padding: 6px 16px;
+            font-weight: 500;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-bottom: 24px;
+        }
+
+        .edit-profile-btn:hover {
+            background-color: #30363d;
+            border-color: #8b949e;
+            text-decoration: none;
+        }
+
+        .user-info-list {
+            list-style: none;
+            font-size: 14px;
+            color: var(--color-text-primary);
+        }
+
+        .user-info-list li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* --- CONTEÚDO PRINCIPAL (Main) --- */
+        .main-content {
+            flex: 1;
+        }
+
+        .nav-tabs {
+            border-bottom: 1px solid var(--color-border-default);
+            margin-bottom: 24px;
+            display: flex;
+            gap: 8px;
+            padding-bottom: 8px;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            font-size: 14px;
+            color: var(--color-text-primary);
+            border-radius: 6px;
+            font-weight: 400;
+        }
+
+        .nav-tab.active {
+            font-weight: 600;
+            background-color: var(--color-bg-subtle);
+            border: 1px solid var(--color-border-default);
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 400;
+            margin-bottom: 16px;
+            color: var(--color-text-primary);
+        }
+
+        /* Grade de Repositórios/Projetos */
+        .repo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .repo-card {
+            background-color: var(--color-bg-subtle);
+            border: 1px solid var(--color-border-default);
+            border-radius: 6px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .repo-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .repo-title {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--color-text-link);
+        }
+
+        .repo-badge {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 2px 7px;
+            border-radius: 2em;
+            border: 1px solid var(--color-border-default);
+            color: var(--color-text-secondary);
+        }
+
+        .repo-desc {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            flex-grow: 1;
+            margin-bottom: 16px;
+        }
+
+        .repo-meta {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .lang-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* Tech Stack Section */
+        .tech-stack-section {
+            background-color: var(--color-bg-subtle);
+            border: 1px solid var(--color-border-default);
+            border-radius: 6px;
+            padding: 24px;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 20px;
+            justify-items: center;
+            text-align: center;
+        }
+
+        .tech-item i {
+            font-size: 40px;
+            color: var(--color-text-secondary);
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .tech-item:hover i {
+            color: var(--color-text-primary);
+            transform: scale(1.1);
+        }
+
+        .tech-name {
+            font-size: 12px;
+            color: var(--color-text-secondary);
+            margin-top: 8px;
+            display: block;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <aside class="sidebar">
+            <div class="avatar-container">
+                <img src="https://limaspapp.github.io/img/admin.png" alt="Foto de Perfil" class="avatar">
+                <div class="status-badge" title="Status: Focus">🎯</div>
+            </div>
+
+            <div class="user-names">
+                <h1 class="user-name-full">Waltemar Carneiro</h1>
+                <h2 class="user-name-github">apps nativos</h2>
+            </div>
+
+            <div class="bio">
+                🚀 Full Stack Developer | Solucionando problemas do backend ao frontend.
+            </div>
+
+            <a href="#" class="edit-profile-btn">Follow</a>
+
+            <ul class="user-info-list">
+                <li>👤 Focado em Node.js, React e Cloud</li>
+                <li>📍 Manaus, Amazonas, Brasil</li>
+                <li>📧 waltemar.dev@email.com</li>
+                <li>🔗 <a href="https://linkedin.com/in/waltemarcarneiro" target="_blank">linkedin.com/in/waltemarcarneiro</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            
+            <nav class="nav-tabs">
+                <a href="#" class="nav-tab active">Overview</a>
+                <a href="#" class="nav-tab">Repositories <span class="repo-badge">12</span></a>
+                <a href="#" class="nav-tab">Projects</a>
+            </nav>
+
+            <h3 class="section-title">Popular repositories</h3>
+
+            <div class="repo-grid">
+                
+                <div class="repo-card">
+                    <div class="repo-header">
+                        <span class="repo-title">api-vendas-backend</span>
+                        <span class="repo-badge">Public</span>
+                    </div>
+                    <p class="repo-desc">API RESTful completa para gestão de e-commerce construída com Node.js, Express e PostgreSQL.</p>
+                    <div class="repo-meta">
+                        <span><span class="lang-color" style="background-color: #f1e05a;"></span> JavaScript</span>
+                        <span>⭐ 15</span>
+                    </div>
+                </div>
+
+                <div class="repo-card">
+                    <div class="repo-header">
+                        <span class="repo-title">dash-vendas-frontend</span>
+                        <span class="repo-badge">Public</span>
+                    </div>
+                    <p class="repo-desc">Painel administrativo responsivo para visualizar dados da API de vendas. Feito com React e Tailwind CSS.</p>
+                    <div class="repo-meta">
+                        <span><span class="lang-color" style="background-color: #3178c6;"></span> TypeScript</span>
+                        <span>⭐ 22</span>
+                    </div>
+                </div>
+
+                <div class="repo-card">
+                    <div class="repo-header">
+                        <span class="repo-title">dev-container-setup</span>
+                        <span class="repo-badge">Public</span>
+                    </div>
+                    <p class="repo-desc">Configurações Docker Compose para ambientes de desenvolvimento Full Stack rápidos.</p>
+                    <div class="repo-meta">
+                        <span><span class="lang-color" style="background-color: #384d54;"></span> Dockerfile</span>
+                        <span>⭐ 8</span>
+                    </div>
+                </div>
+
+                <div class="repo-card">
+                    <div class="repo-header">
+                        <span class="repo-title">microservices-lib</span>
+                        <span class="repo-badge">Public</span>
+                    </div>
+                    <p class="repo-desc">Biblioteca auxiliar para comunicação entre microsserviços usando RabbitMQ.</p>
+                    <div class="repo-meta">
+                        <span><span class="lang-color" style="background-color: #f1e05a;"></span> JavaScript</span>
+                        <span>⭐ 5</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <h3 class="section-title">Minha Tech Stack</h3>
+            <div class="tech-stack-section">
+                <div class="tech-grid">
+                    <div class="tech-item" title="Node.js"><i class="devicon-nodejs-plain colored"></i><span class="tech-name">Node.js</span></div>
+                    <div class="tech-item" title="React"><i class="devicon-react-original colored"></i><span class="tech-name">React</span></div>
+                    <div class="tech-item" title="TypeScript"><i class="devicon-typescript-plain colored"></i><span class="tech-name">TypeScript</span></div>
+                    <div class="tech-item" title="PostgreSQL"><i class="devicon-postgresql-plain colored"></i><span class="tech-name">PostgreSQL</span></div>
+                    <div class="tech-item" title="Docker"><i class="devicon-docker-plain colored"></i><span class="tech-name">Docker</span></div>
+                    <div class="tech-item" title="AWS"><i class="devicon-amazonwebservices-original colored"></i><span class="tech-name">AWS</span></div>
+                    <div class="tech-item" title="Git"><i class="devicon-git-plain colored"></i><span class="tech-name">Git</span></div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>
